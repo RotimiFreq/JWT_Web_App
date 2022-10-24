@@ -1,6 +1,7 @@
 package util
 
 import (
+
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go/v4"
@@ -20,6 +21,18 @@ func GenerateJwt(new_issuer string ) string {
 	
 }
 
-func ParseJWT()
+func ParseJWT(current_cookie string ) (string , error) {
+	token , err := jwt.ParseWithClaims(current_cookie , &jwt.StandardClaims{}, func(token *jwt.Token)(interface{} , error) {
+
+		return []byte(SECRET_KEY), nil
+	})
+
+	if err != nil || !token.Valid  {
+		return " ", err 
+	}
+	claims := token.Claims.(*jwt.StandardClaims)
+
+	return claims.Issuer ,nil 
+}
 
 
